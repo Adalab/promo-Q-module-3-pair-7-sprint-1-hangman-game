@@ -1,11 +1,23 @@
-import { useState } from 'react';
-import '../styles/App.scss';
+import { useState } from "react";
+import "../styles/App.scss";
 
 function App() {
   const [numberOfErrors, setNumberOfErrors] = useState(0);
   const handleClick = (ev) => {
     setNumberOfErrors(numberOfErrors + 1);
   };
+
+  const [lastLetter, setLastLetter] = useState("");
+
+  const forbiddenCharacters =
+    /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?¿~·ªº0123456789]/;
+
+  const handleInputLetter = (ev) => {
+    if (!forbiddenCharacters.test(ev.currentTarget.value)) {
+      setLastLetter(ev.currentTarget.value);
+    }
+  };
+
   return (
     <div className="page">
       <header>
@@ -49,6 +61,8 @@ function App() {
               type="text"
               name="last-letter"
               id="last-letter"
+              value={lastLetter}
+              onChange={handleInputLetter}
             />
           </form>
         </section>
