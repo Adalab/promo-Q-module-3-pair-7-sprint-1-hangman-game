@@ -1,13 +1,22 @@
-import { useState } from "react";
-import "../styles/App.scss";
+import { useState } from 'react';
+import '../styles/App.scss';
 
 function App() {
   const [numberOfErrors, setNumberOfErrors] = useState(0);
+  const [word, setWord] = useState('katakroker');
+  const [lastLetter, setLastLetter] = useState('');
+  const [userLetters, setUserLetters] = useState([]);
+
+  const renderSolutionLetters = (ev) => {
+    const wordLetters = word.split('');
+    return wordLetters.map((wordItem, i) => {
+      return <li key={i} className="letter"></li>;
+    });
+  };
+
   const handleClick = (ev) => {
     setNumberOfErrors(numberOfErrors + 1);
   };
-
-  const [lastLetter, setLastLetter] = useState("");
 
   const forbiddenCharacters =
     /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?¿~·ªº0123456789]/;
@@ -15,6 +24,9 @@ function App() {
   const handleInputLetter = (ev) => {
     if (!forbiddenCharacters.test(ev.currentTarget.value)) {
       setLastLetter(ev.currentTarget.value);
+    }
+    if (lastLetter !== '') {
+      setUserLetters([...userLetters, lastLetter]);
     }
   };
 
@@ -27,18 +39,7 @@ function App() {
         <section>
           <div className="solution">
             <h2 className="title">Solución:</h2>
-            <ul className="letters">
-              <li className="letter">k</li>
-              <li className="letter">a</li>
-              <li className="letter"></li>
-              <li className="letter">a</li>
-              <li className="letter">k</li>
-              <li className="letter">r</li>
-              <li className="letter"></li>
-              <li className="letter">k</li>
-              <li className="letter">e</li>
-              <li className="letter">r</li>
-            </ul>
+            <ul className="letters">{renderSolutionLetters()}</ul>
           </div>
           <div className="error">
             <h2 className="title">Letras falladas:</h2>
